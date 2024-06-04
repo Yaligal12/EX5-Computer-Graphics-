@@ -175,7 +175,6 @@ back_support1.add( ring3 );
 ring4.applyMatrix4(ring4_matrix);
 back_support2.add( ring4 );
 
-scene.add(goal);
 
 //Create flag on top of the goal
 const flag = new THREE.Object3D();
@@ -203,10 +202,10 @@ flag_plane.applyMatrix4(flag_plane_matrix);
 
 flag.add(stick);
 flag.add(flag_plane);
+goal.add(flag);
 
-
-scene.add(flag);
-
+// add the goal to the scene
+scene.add(goal);
 
 //rendering of the ball
 const ball_matrix = new THREE.Matrix4();
