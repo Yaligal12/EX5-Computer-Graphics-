@@ -21,6 +21,7 @@ let goal = new THREE.Object3D();
 const shrink_matrix = new THREE.Matrix4();
 shrink_matrix.makeScale(0.95,0.95,0.95);
 
+// crrosbar 
 const crossbar_matrix = new THREE.Matrix4();
 const crossbar_rotation_matrix = new THREE.Matrix4();
 const crossbar_translation_matrix = new THREE.Matrix4();
@@ -35,6 +36,7 @@ const crossbar = new THREE.Mesh(crossbar_geometry, crossbar_material);
 
 crossbar.applyMatrix4(crossbar_matrix);
 
+// posts 
 const post1_matrix = new THREE.Matrix4();
 const post1_translation_matrix = new THREE.Matrix4();
 post1_translation_matrix.makeTranslation(59.5,0,0);
@@ -53,6 +55,7 @@ const post2 = new THREE.Mesh( post_geometry, post_material );
 post1.applyMatrix4(post1_matrix);
 post2.applyMatrix4(post2_matrix);
 
+// back supports
 const back_support1_matrix = new THREE.Matrix4();
 const back_support1_translation_matrix = new THREE.Matrix4();
 const back_support1_rotation_matrix = new THREE.Matrix4();
@@ -75,6 +78,7 @@ const back_support2 = new THREE.Mesh( back_support_geometry, back_support_materi
 back_support1.applyMatrix4(back_support1_matrix);
 back_support2.applyMatrix4(back_support2_matrix);
 
+// add the skeleton to the goal
 goal.add(post1);
 goal.add(post2);
 goal.add(crossbar);
@@ -94,12 +98,12 @@ const back_netmaterial = new THREE.MeshBasicMaterial( {color: 'lightgrey', side:
 const back_net = new THREE.Mesh( back_net_geometry, back_netmaterial );
 
 back_net.applyMatrix4(back_net_matrix);
+
 goal.add( back_net );
 
+//rendering the goal sides nets
 const triangle_shape = new THREE.Shape();
-// Start at the first point
 triangle_shape.moveTo(0, 0);
-// Draw lines to subsequent points
 triangle_shape.lineTo(0, 40);
 triangle_shape.lineTo(23.094, 0);
 triangle_shape.lineTo(0, 0);
@@ -128,6 +132,7 @@ goal.add( triangle1 );
 triangle2.applyMatrix4(triangle2_matrix);
 goal.add( triangle2 );
 
+// rings of the goal
 const ring1_matrix = new THREE.Matrix4();
 const ring1_translation_matrix = new THREE.Matrix4();
 const ring1_rotation_matrix = new THREE.Matrix4();
@@ -178,6 +183,7 @@ back_support2.add( ring4 );
 
 //Create flag on top of the goal
 const flag = new THREE.Object3D();
+// stick of the flag
 const stick_matrix = new THREE.Matrix4();
 const stick_translation_matrix = new THREE.Matrix4();
 stick_translation_matrix.makeTranslation(59,30,0);
@@ -186,8 +192,7 @@ const stick_geometry = new THREE.CylinderGeometry(1, 1, 20, 15);
 const stick_material = new THREE.MeshBasicMaterial( {color: 'black'});
 const stick = new THREE.Mesh( stick_geometry, stick_material );
 stick.applyMatrix4(stick_matrix);
-
-
+// flag plane
 const flag_plane_matrix = new THREE.Matrix4();
 const flag_plane_translation_matrix = new THREE.Matrix4();
 const flag_plane_rotation_matrix = new THREE.Matrix4();
@@ -200,8 +205,11 @@ const flag_plane_geometry = new THREE.PlaneGeometry( 40, 20 );
 const flag_plane = new THREE.Mesh( flag_plane_geometry, flag_plane_material );
 flag_plane.applyMatrix4(flag_plane_matrix);
 
+// build the flag
 flag.add(stick);
 flag.add(flag_plane);
+
+// add the flag to the goal
 goal.add(flag);
 
 // add the goal to the scene
@@ -210,7 +218,7 @@ scene.add(goal);
 //rendering of the ball
 const ball_matrix = new THREE.Matrix4();
 const ball_translation_matrix = new THREE.Matrix4();
-ball_translation_matrix.makeTranslation(0, 0, 30);
+ball_translation_matrix.makeTranslation(0, 0, 40);
 ball_matrix.multiply(ball_translation_matrix);
 
 const ball_geometry = new THREE.SphereGeometry( 2.5, 30, 15 );
@@ -222,7 +230,7 @@ scene.add( ball );
 
 // This defines the initial distance of the camera
 const cameraTranslate = new THREE.Matrix4();
-cameraTranslate.makeTranslation(0,0,100);
+cameraTranslate.makeTranslation(0,0,200);
 camera.applyMatrix4(cameraTranslate)
 
 renderer.render(scene, camera);
@@ -232,8 +240,9 @@ const controls = new OrbitControls( camera, renderer.domElement );
 let isOrbitEnabled = true;
 let animationxEnabled = false;
 let animationyEnabled = false;
-let speedFactor = 2;
+let speedFactor = 1;
 
+// This function toggles the wireframe of the objects
 function toggleWireframe() {
     crossbar_material.wireframe = !crossbar_material.wireframe;
     post_material.wireframe = !post_material.wireframe;
@@ -242,13 +251,18 @@ function toggleWireframe() {
     triangle_material.wireframe = !triangle_material.wireframe;
     ring_material.wireframe = !ring_material.wireframe;
     ball_material.wireframe = !ball_material.wireframe;
+	stick_material.wireframe = !stick_material.wireframe;
+	flag_plane_material.wireframe = !flag_plane_material.wireframe;
 }
 
+// This function toggles the orbit of the camera
 const toggleOrbit = (e) => {
 	if (e.key == "o"){
 		isOrbitEnabled = !isOrbitEnabled;
 	}
 }
+
+// This function handles the key presses
 const keyPressed = (e) => {
 	if (e.key == "w"){
 		toggleWireframe();
